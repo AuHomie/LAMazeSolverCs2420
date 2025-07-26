@@ -9,7 +9,7 @@ set(APP_EXECUTABLE MazeSolver)
 
 include_directories(inc)
 
-add_executable(${APP_EXECUTABLE} "src/MazeSolver.cpp")
+add_executable(${APP_EXECUTABLE} "/MazeSolver.cpp")
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
 
