@@ -1,5 +1,7 @@
 #include<iostream>
-#include "Maze.h"
+#include"src/Maze.h"
+
+
 int main()
 { //Print, solve and show the maze
 Maze m;

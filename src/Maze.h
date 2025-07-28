@@ -36,7 +36,7 @@ class Maze{
             maze[currR][currC] = S;
         return false;
         }
-        
+
         return false;
     }
 
@@ -60,7 +60,7 @@ class Maze{
     bool isEmpty(int r, int c){
         if (r >= 0 && c >=0 && r <HEIGHT && c < WIDTH)
         {
-            if(maze[r][c] == S);
+            if(maze[r][c] == S)
             {
                 return true;
             }
