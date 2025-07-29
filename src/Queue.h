@@ -16,34 +16,103 @@ private:
 
     Node* front;
     Node* back;
-    int size;
+    int count;
 
     // Private recursive function for operator<<
     std::string recursive_str(Node* curr) {
         if (!curr) return "";
         return std::to_string(curr->data) + (curr->next ? "->" + recursive_str(curr->next) : "");
     }
+public:
+    Queue() : front(nullptr), back(nullptr), count(0) {};
 
-/*
-Queue(): Constructor, sets the front and back pointer to nullptr and initializes any other additional variables
-Queue(const Queue &other):  Copy Constructor, creates a deep copy of the other stack
-~Queue(); Deallocates memory by deleting all the existing nodes in the Queue
-void enqueue(Type item); Adds an item to the end of the queue
-void dequeue(); removes an item from the front of the queue
-Type peek(); returns the value of the item at the front of the queue, but does not remove it
-int size(); returns the number of items in the queue
-bool empty(); returns true if the queue is empty
-void clear(); deletes the items in the list and sets the size to 0 (don't forget to delete each node using the "delete" command.
-friend ostream &operator<< <>(ostream &out, Queue<Type> &q); Allows the user to output the queue formatted as... item1->item2->item3->item4.  For example, if the queue has values 1, 2, 3, 4 with 1 at the front and 4 at the end it would return 1->2->3->4  It is recommended that you use recursion to accomplish this function.  You may use a private recursive to code the logic, then the operator would just return the results of the recursive function  such as...  string recursive_str(Node<Type> *curr);
-One possible Pseudocode solution is as follows...
+    Queue(const Queue &other) : front(nullptr), back(nullptr), count(0){
+        Node* curr = other.front;
+        while ((curr != nullptr))
+        {
+            enqueue(curr->data);
+            curr = curr->next;
+        }
+    }
 
-If the current pointer's next value is null
-     return the data of the current node
-Else
-     return the data of the current node then a "->" then the results of the recursive call
+    ~Queue(){ 
+        clear();
+    }  
 
-*/
+    void enqueue(Type item) {
+        Node* newNode = new Node(item);
+        if (back) {
+            back->next = newNode;
+        } else {
+            front = newNode;
+        }
+        back = newNode;
+        count++;
+    }
 
+    void dequeue(){
+        if (front) {
+            Node* temp = front;
+            front = front->next;
+            delete temp;
+            count--;
+            if (count == 0) {
+                back = nullptr;
+            }
+        }
+    }
+
+    Type peek() const {
+        if (front) {
+            return front->data;
+        }
+        throw std::runtime_error("Queue is empty");
+    }
+
+    int size() const {
+        return count;
+    }
+
+    bool empty() const {
+        return count == 0;
+    }
+    
+    void clear() {
+        while (front) {
+            Node* temp = front;
+            front = front->next;
+            delete temp;
+        }
+        back = nullptr;
+        size = 0;
+    }
+
+    std::string recursive_str(Node* curr) const {
+        std::ostringstream oss;
+        oss << curr->data;
+        return oss.str() + (curr->next ? "->" + recursive_str(curr->next) : "");
+    }
+
+    friend std::ostream &operator<<(std::ostream &out, const Queue<Type> &q) {
+        if (q.empty()) {
+            out << "Queue is empty";
+        } else {
+            out << q.recursive_str(q.front);
+        }
+        return out;
+    }        
+
+    Queue& operator=(const Queue &other) {
+        if (this != &other) {
+            clear(); // Clear current queue
+            Node* curr = other.front;
+            while (curr) {
+                enqueue(curr->data);
+                curr = curr->next;
+            }
+        }
+        return *this;
+    }           
 
 };
 #endif // Queue_H
